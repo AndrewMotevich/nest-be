@@ -1,73 +1,55 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Nest-be API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This is a cv-gen api. For start using you should:
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+1. Uncomment @Public directive in auth/users/users.controller.ts
+2. Add first user by using method post for api/users/
+3. Comment @Public directive to avoid unexpected access.
+4. Use your first user credentials for auth and add access token for access.
+5. Congratulate! Now you can use your user for access and add new user if necessary.
 
-## Description
+#### P.S. This operation required to add the first user.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+#### You can add @Public directive for all controllers in development.
 
-## Installation
+#### But in production I suggest to delete @Public from protected controllers and use authorize guard inside API for protection
 
-```bash
-$ npm install
+## Run api
 ```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm install
+npm run develop
 ```
+Application starts on http://localhost:3000/api
 
-## Test
+Swagger starts on http://localhost:3000/docs
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+## FAQ
+<details>
+<summary>How to authorize?</summary>
+To get access you should use Authorize button in swagger or Authorization="Bearer <'your-access-token>" header in http request.
+</details>
+<details>
+<summary>Difference between scheme with Dto suffix and without it?</summary>
+Scheme with Dto suffix used to pass data to the api. Dto is a 'data transfer object'. These schemas are using for POST and PATCH methods
+Schemes without Dto are outputs from GET methods
+</details>
+<details>
+<summary>PUT vs PATCH?</summary>
+I used PUT, because, we should update sub-collections like skills and ect.
+PATCH rewrite single fields and add additional data to collection. For instance, you can add new skills, but can't delete unnecessary!
+Note!!! Each PUT rewrite all data!
+</details>
+<details>
+<summary>Can't add new Cv (employeeId)?</summary>
+'employeeId' field is necessary for relation between employee and cv.
+You cant add cv without relation to employee. Please, check 'employeeId' property if something goes wrong!
+</details>
+<details>
+<summary>All types of errors in the project!</summary>
+Note: Every time read error message! That can help you to resolve a problem.
+400 Bad request Error. Check you body or parameters!
+401 Unauthorized Error. Happened if you haven't got an access-token or have incorrect token. You should log-in/sign-in or refresh tokens!
+403 Forbidden Error. Happened if credentials or refresh-token are incorrect. Check credentials and re log-in!
+404 Not found Error. Happened if entity isn't exist. Check your id.
+500 Internal server Error. This error will arrive if I couldn't handle error. See message to resolve it.
+</details>
