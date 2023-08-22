@@ -17,7 +17,8 @@ This is a cv-gen api. For start using you should:
 ## Run api
 ```
 npm install
-npm run develop
+npx prisma migrate --name init
+npm run start:dev
 ```
 Application starts on http://localhost:3000/api
 
