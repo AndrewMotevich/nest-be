@@ -29,13 +29,24 @@ export class AuthController {
   @Post('login')
   signIn(
     @Res({ passthrough: true }) response: Response,
-    @Body() signInDto: UserDto,
+    @Body() signInDto: UserDto
   ) {
     return this.authService.signIn(
       signInDto.email,
       signInDto.password,
-      response,
+      response
     );
+  }
+
+  @ApiOperation({ summary: 'Log out and clear cookie' })
+  @ApiForbiddenResponse({ description: 'Forbidden Error', type: Error })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal Server Error',
+    type: Error,
+  })
+  @Get('logout')
+  logOut(@Res({ passthrough: true }) response: Response) {
+    this.authService.logOut(response);
   }
 
   @ApiOperation({ summary: 'Refresh tokens' })
@@ -47,7 +58,7 @@ export class AuthController {
   @Get('refresh')
   refresh(
     @Req() request: Request,
-    @Res({ passthrough: true }) response: Response,
+    @Res({ passthrough: true }) response: Response
   ) {
     return this.authService.refresh(request, response);
   }
