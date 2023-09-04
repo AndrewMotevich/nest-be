@@ -29,12 +29,12 @@ export class AuthController {
   @Post('login')
   signIn(
     @Res({ passthrough: true }) response: Response,
-    @Body() signInDto: UserDto
+    @Body() signInDto: UserDto,
   ) {
     return this.authService.signIn(
       signInDto.email,
       signInDto.password,
-      response
+      response,
     );
   }
 
@@ -58,7 +58,7 @@ export class AuthController {
   @Get('refresh')
   refresh(
     @Req() request: Request,
-    @Res({ passthrough: true }) response: Response
+    @Res({ passthrough: true }) response: Response,
   ) {
     return this.authService.refresh(request, response);
   }

@@ -1,12 +1,9 @@
-import {
-  ForbiddenException,
-  Injectable,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UsersService } from './users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
 import { JWT_ACCESS_OPTIONS, JWT_REFRESH_OPTIONS } from '../config/jwt.config';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { Tokens } from './users/dto/user.dto';
 
 @Injectable()
@@ -15,18 +12,18 @@ export class AuthService {
 
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   async signIn(
     username: string,
     pass: string,
-    response: Response
+    response: Response,
   ): Promise<Tokens> {
     try {
       const user = await this.usersService.findOne(username);
       if (!(await bcrypt.compare(pass, user?.password))) {
-        throw new ForbiddenException()
+        throw new ForbiddenException();
       }
       const payload = { email: user.email };
       const tokens = await this.getTokens(payload, response);
@@ -37,14 +34,14 @@ export class AuthService {
     }
   }
 
-  logOut(response: Response){
+  logOut(response: Response) {
     response.cookie('refresh', '', {
       httpOnly: true,
       sameSite: 'none',
       secure: true,
       maxAge: this.oneDayInMilliseconds,
     });
-    return {message: 'Refresh cookie cleared'}
+    return { message: 'Refresh cookie cleared' };
   }
 
   async refresh(request: Request, response: Response): Promise<Tokens> {
@@ -71,11 +68,11 @@ export class AuthService {
   private async getTokens(payload: { email: string }, response: Response) {
     const accessToken = await this.jwtService.signAsync(
       { email: payload.email },
-      JWT_ACCESS_OPTIONS
+      JWT_ACCESS_OPTIONS,
     );
     const refreshToken = await this.jwtService.signAsync(
       { email: payload.email },
-      JWT_REFRESH_OPTIONS
+      JWT_REFRESH_OPTIONS,
     );
 
     response.cookie('refresh', refreshToken, {
