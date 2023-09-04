@@ -1,3 +1,4 @@
+import { Shared } from 'src/app/shared/shared.dto';
 import { ProjectDto } from '../../core/projects/dto/project.dto';
 
 export function transformProjectDto(project: ProjectDto) {
@@ -30,37 +31,43 @@ export function transformProjectDto(project: ProjectDto) {
   };
 }
 
-export function transformProjectPartial(project: Partial<ProjectDto>) {
-  const teamRoles =
-    project?.teamRoles?.map((teamRole) => ({
-      where: { name: teamRole.toLowerCase() },
-      create: { name: teamRole.toLowerCase() },
-    })) || [];
+export function transformProjectPartial(
+  project: ProjectDto,
+  previousProject: {
+    responsibilities: Shared[];
+    teamRoles: Shared[];
+    techStack: Shared[];
+  },
+) {
+  const teamRoles = project?.teamRoles?.map((teamRole) => ({
+    where: { name: teamRole.toLowerCase() },
+    create: { name: teamRole.toLowerCase() },
+  }));
 
-  const responsibilities =
-    project?.responsibilities?.map((responsibility) => ({
-      where: { name: responsibility.toLowerCase() },
-      create: { name: responsibility.toLowerCase() },
-    })) || [];
+  const responsibilities = project?.responsibilities?.map((responsibility) => ({
+    where: { name: responsibility.toLowerCase() },
+    create: { name: responsibility.toLowerCase() },
+  }));
 
-  const techStack =
-    project?.techStack?.map((skill) => ({
-      where: { name: skill.toLowerCase() },
-      create: { name: skill.toLowerCase() },
-    })) || [];
+  const techStack = project?.techStack?.map((skill) => ({
+    where: { name: skill.toLowerCase() },
+    create: { name: skill.toLowerCase() },
+  }));
 
   return {
     ...project,
     teamRoles: {
-      deleteMany: {},
+      disconnect: previousProject.teamRoles.map((elem) => ({ id: elem.id })),
       connectOrCreate: teamRoles,
     },
     techStack: {
-      deleteMany: {},
+      disconnect: previousProject.techStack.map((elem) => ({ id: elem.id })),
       connectOrCreate: techStack,
     },
     responsibilities: {
-      deleteMany: {},
+      disconnect: previousProject.responsibilities.map((elem) => ({
+        id: elem.id,
+      })),
       connectOrCreate: responsibilities,
     },
   };

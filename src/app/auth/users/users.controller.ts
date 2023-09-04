@@ -10,10 +10,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { UserDto } from './dto/user.dto';
-// import { Public } from '../auth.guard';
+import { Public } from '../auth.guard';
 import { Error } from '../../shared/shared.dto';
 
-// @Public()
+@Public()
 @ApiBearerAuth()
 @ApiTags('USER')
 @Controller('users')
