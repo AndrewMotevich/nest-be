@@ -6,10 +6,12 @@ import { DatabaseModule } from '../database/database.module';
 import { DepartmentsController } from './departments/departments.controller';
 import { SpecializationController } from './specializations/specializations.controller';
 import { LanguagesController } from './languages/languages.controller';
+import { LevelsController } from './levels/levels.controller';
 
 @Module({
   imports: [DatabaseModule],
   controllers: [
+    LevelsController,
     SpecializationController,
     DepartmentsController,
     SkillsController,

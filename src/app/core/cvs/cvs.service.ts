@@ -4,11 +4,11 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { DatabaseService } from '../../database/database.service';
-import { Cv, CvDto } from './dto/cv.dto';
 import {
   transformCvDto,
   transformCvPartial,
 } from '../../database/helpers/transform-cv-dto';
+import { Cv, CvDto } from './dto/cv.dto';
 import { cvOutput } from './dto/cv.output';
 
 @Injectable()
@@ -50,9 +50,13 @@ export class CvsService {
 
   async updateCv(id: number, dto: CvDto): Promise<Cv> {
     try {
+      const prevCv = await this.dataBaseService.cV.findFirstOrThrow({
+        where: { id: id },
+        select: cvOutput,
+      });
       return await this.dataBaseService.cV.update({
         where: { id: id },
-        data: transformCvPartial(dto),
+        data: transformCvPartial(dto, prevCv),
         select: cvOutput,
       });
     } catch (error) {
