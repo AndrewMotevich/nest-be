@@ -1,0 +1,50 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:13.3
+    environment:
+      POSTGRES_DB: "nest-be-db"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "Admin1234"
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - mynet
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:7.2
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "Admin1234"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - mynet
+
+  nest-be:
+    build:
+      context: ./
+    ports:
+      - "3000:3000"
+    networks:
+      - mynet
+    depends_on:
+          - postgres
+
+networks:
+  mynet:
+    driver: bridge
