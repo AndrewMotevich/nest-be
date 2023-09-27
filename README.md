@@ -1,32 +1,36 @@
-# Nest-be API
-
-This is a cv-gen api. For start using you should:
-
-1. Uncomment @Public directive in auth/users/users.controller.ts
-2. Add first user by using method post for api/users/
-3. Comment @Public directive to avoid unexpected access.
-4. Use your first user credentials for auth and add access token for access.
-5. Congratulate! Now you can use your user for access and add new user if necessary.
-
-#### P.S. This operation required to add the first user.
-
-#### You can add @Public directive for all controllers in development.
-
-#### But in production I suggest to delete @Public from protected controllers and use authorize guard inside API for protection
+# Nest-be
+This is my nest backend for project Cv-gen. Its allow you to manipulate data in three coolections: cvs, projects, employees.
 
 ## Run api
+1. Install docker
+2. Run Api by docker compose
 ```
-npm install
-npx prisma migrate dev --name init
-npm run start:dev
+docker-compose up
 ```
-Application starts on http://localhost:3000/api
 
-Swagger starts on http://localhost:3000/docs
+
+***
+
+### **API** starts on http://localhost:3000/api
+
+### **SWAGER** starts on http://localhost:3000/docs
+
+### **PgAdmin** starts on http://localhost:5050
+
+Credentials for pgAdmin (see compose.yaml):
+  - PGADMIN_DEFAULT_EMAIL: "admin@admin.com"
+  - PGADMIN_DEFAULT_PASSWORD: "Admin1234"
 
 ## FAQ
 <details>
+<summary>Before usage!!! Add user.</summary>
+Before usage you should add an admin or first user in tab USERS
+To add user => post user credentials
+After adding you can Authorize.
+</details>
+<details>
 <summary>How to authorize?</summary>
+NOTE: Add user before authorize!
 To get access you should use Authorize button in swagger or Authorization="Bearer <'your-access-token>" header in http request.
 </details>
 <details>

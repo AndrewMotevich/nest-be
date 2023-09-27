@@ -36,6 +36,7 @@ services:
       - mynet
 
   nest-be:
+    container_name: nest-be
     build:
       context: ./
     ports:
